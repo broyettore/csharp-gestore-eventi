@@ -17,6 +17,8 @@ namespace csharp_gestore_eventi.Classes
         {
             this.title = title;
             this.date = date;
+            if (maxcapacity <= 0)
+                throw new ArgumentException("Max capacity has to be a positive number");
             this.maxCapacity = maxcapacity;
             this.bookedSeats = 0;
         }
@@ -25,16 +27,9 @@ namespace csharp_gestore_eventi.Classes
 
         public int GetEventMaxCapacity // only read
         {
-            get 
-            { 
-                return maxCapacity;
-            }
-
-            private set
+            get
             {
-                if (value <= 0)
-                    throw new ArgumentException("Max Capacity must be a positive number");
-                this.maxCapacity = value;
+                return maxCapacity;
             }
         }
 
@@ -79,7 +74,46 @@ namespace csharp_gestore_eventi.Classes
         }
 
         // METHODS
-        
+        public void bookSeats(int numberOfSeatsToBook)
+        {
+            if (this.date < DateTime.Now)
+            {
+                throw new ArgumentException("the event has already passed");
+            }
+            if (this.bookedSeats + numberOfSeatsToBook > this.maxCapacity)
+            {
+                throw new ArgumentException("I'm sorry but we are fully booked");
+            }
+            if (numberOfSeatsToBook < 0)
+            {
+                throw new ArgumentException("Specify a number bigger than 0");
+            }
+
+            this.bookedSeats += numberOfSeatsToBook;
+        }
+
+        public void cancelSeatBooking(int numberOfSeatsToCancel)
+        {
+            if (this.date < DateTime.Now)
+            {
+                throw new ArgumentException("the event has already ended");
+            }
+            if (this.bookedSeats < numberOfSeatsToCancel)
+            {
+                throw new ArgumentException("Booked seats do not match the seats you want to cancel");
+            }
+            if (numberOfSeatsToCancel < 0)
+            {
+                throw new ArgumentException("Specify a number bigger than 0");
+            }
+            this.bookedSeats -= numberOfSeatsToCancel;
+        }
+
+        public override string ToString()
+        {
+            string formatDate = this.date.ToString("dd/MM/yyyy");
+            return $"Event Date: {formatDate} \n Event Title: {this.title}";
+        }
 
     }
 }

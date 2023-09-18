@@ -16,14 +16,17 @@ namespace csharp_gestore_eventi.Classes
         public Event(string title, DateTime date, int maxcapacity)
         {
             if (string.IsNullOrWhiteSpace(title))
-            {
                 throw new ArgumentException("title field can not be empty");
-            }
             this.title = title;
+
+            if (date < DateTime.Now)
+                throw new ArgumentException($"this date {date} is not correct");
             this.date = date;
+
             if (maxcapacity <= 0)
                 throw new ArgumentException("Max capacity has to be a positive number");
             this.maxCapacity = maxcapacity;
+
             this.bookedSeats = 0;
         }
 
@@ -69,15 +72,15 @@ namespace csharp_gestore_eventi.Classes
                 if (value < DateTime.Now)
                 {
                     throw new ArgumentException($"this date {value} is not correct");
+                    this.date = value;
                 }
-                this.date = value;
             }
         }
 
- 
+
 
         // METHODS
-        public void bookSeats(int numberOfSeatsToBook)
+        public int bookSeats(int numberOfSeatsToBook)
         {
             if (this.date < DateTime.Now)
             {
@@ -92,10 +95,12 @@ namespace csharp_gestore_eventi.Classes
                 throw new ArgumentException("Specify a number bigger than 0");
             }
 
-            this.bookedSeats += numberOfSeatsToBook;
+            this.bookedSeats += numberOfSeatsToBook;  // Updates bookedSeats
+
+            return this.bookedSeats;
         }
 
-        public void cancelSeatBooking(int numberOfSeatsToCancel)
+        public int cancelSeatBooking(int numberOfSeatsToCancel)
         {
             if (this.date < DateTime.Now)
             {
@@ -109,13 +114,16 @@ namespace csharp_gestore_eventi.Classes
             {
                 throw new ArgumentException("Specify a number bigger than 0");
             }
-            this.bookedSeats -= numberOfSeatsToCancel;
+
+            this.bookedSeats -= numberOfSeatsToCancel;  // Updates bookedSeats after cancel
+
+            return this.bookedSeats;
         }
 
         public override string ToString()
         {
-            string formatDate = this.date.ToString("dd/MM/yyyy");
-            return $"Event Date: {formatDate} \n Event Title: {this.title}";
+            string formatDate = this.date.ToString("dd/MM/yyyy HH:mm");
+            return $"\n Event Date: {formatDate} \n Event Title: {this.title}";
         }
 
     }

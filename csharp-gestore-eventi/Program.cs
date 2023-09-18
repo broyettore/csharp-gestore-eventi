@@ -1,6 +1,7 @@
 ﻿using csharp_gestore_eventi.Classes;
 using System.Diagnostics.Tracing;
 using System.Globalization;
+using System.Text;
 
 namespace csharp_gestore_eventi
 {
@@ -8,6 +9,9 @@ namespace csharp_gestore_eventi
     {
         static void Main(string[] args)
         {
+            // UTF8 reading in console
+            Console.OutputEncoding = Encoding.UTF8;
+
             Console.WriteLine("Welcome to Event Handler 2.0 \n ");
 
             string? programName = EventProgram.GetProgamName();
@@ -35,7 +39,7 @@ namespace csharp_gestore_eventi
                     EventProgram.CancelSeatBooking(newEvent);
 
                 }
-                catch (Exception ex) // if an exception is caugth it loops into asking event[i] info until insertions are correct
+                catch (Exception ex) // if an exception is caught it loops into asking event[i] info until insertions are correct
                 {
                     Console.WriteLine(ex.Message);
                     Console.WriteLine($"Reinsert event { i + 1} informations please");

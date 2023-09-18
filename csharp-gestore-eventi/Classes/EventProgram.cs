@@ -12,7 +12,7 @@ namespace csharp_gestore_eventi.Classes
     {
         // ATTRIBUTES
         public string Title { get; private set; }
-        public List<Event> Events {  get; private set; }
+        public List<Event> Events { get; private set; }
 
         // CONSTRUCT
         public EventProgram(string title)
@@ -30,8 +30,8 @@ namespace csharp_gestore_eventi.Classes
         }
 
         // add event to the event list
-        public void AddEvent(Event e) 
-        { 
+        public void AddEvent(Event e)
+        {
             Events.Add(e);
         }
 
@@ -45,20 +45,20 @@ namespace csharp_gestore_eventi.Classes
         public void PrintEventDateTitle()
         {
             Console.WriteLine($"{this.Title}: \t");
-            foreach(Event e in Events)
-            {              
-                Console.WriteLine($"{e.eventDate} - {e.eventTitle}");
+            foreach (Event e in Events)
+            {
+                Console.WriteLine(e);
             }
         }
 
         // gets event of a particular date
         public List<Event> GetEventFromDate(DateTime date)
         {
-            List<Event> eventsOfDate = new List<Event>();
+            List<Event> eventsOfDate = new();
 
             foreach (Event e in Events)
             {
-                if(e.eventDate.Date == date.Date)
+                if (e.EventDate.Date == date.Date)
                     eventsOfDate.Add(e);
             }
 
@@ -74,13 +74,13 @@ namespace csharp_gestore_eventi.Classes
             }
         }
 
-        public static string GetProgamName()
+        public static string? GetProgamName()
         {
             Console.Write("How would you like to name your program of events: ");
             return Console.ReadLine();
         }
-        
-        public static int GetProgamNumOfEvents() 
+
+        public static int GetProgamNumOfEvents()
         {
             Console.Write("How many events would you like to insert in your program: ");
             int eventsNumber;
@@ -90,12 +90,22 @@ namespace csharp_gestore_eventi.Classes
             }
             return eventsNumber;
         }
+        public static int GetProgamNumOfConferences()
+        {
+            Console.Write("How many conferences would you like to insert in your program: ");
+            int eventsNumber;
+            while (int.TryParse(Console.ReadLine(), out eventsNumber) == false)
+            {
+                Console.WriteLine("Please insert a valid number");
+            }
+            return eventsNumber;
+        }
 
-        public static Event createEvent(int eventsNumber)
+        public static Event CreateEvent(int eventsNumber)
         {
             // asks user event name
             Console.Write($"How would you like to name your event {eventsNumber}: ");
-            string eventName = Console.ReadLine();
+            string? eventName = Console.ReadLine();
 
             // asks user event date
             Console.Write($"When should the event {eventsNumber} take place (example: 10 january 2020): ");
@@ -122,25 +132,63 @@ namespace csharp_gestore_eventi.Classes
             // Create and store the events in the array
             return new Event(eventName, parsedDate, totalSeats);
         }
+        public static Conference CreateConference(int eventsNumber)
+        {
+            // asks user event name
+            Console.Write($"How would you like to name your conference {eventsNumber}: ");
+            string? eventName = Console.ReadLine();
 
-        public static void addSeatBooking(Event e)
+            // asks user event date
+            Console.Write($"When should the conference {eventsNumber} take place (example: 10 january 2020): ");
+            DateTime parsedDate;
+
+            // loop unitl date is written correctly
+            while (DateTime.TryParseExact(Console.ReadLine(), "dd MMMM yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate) == false)
+            {
+                Console.Write("Date is written wrong: ");
+            }
+
+            // asks user max capacity of the event
+            Console.Write($"What should the max capacity of your conference be {eventsNumber}: ");
+            int totalSeats;
+
+            while (int.TryParse(Console.ReadLine(), out totalSeats) == false)
+            {
+                Console.WriteLine("Please insert a number: ");
+            }
+
+            // asks user speaker's name
+            Console.Write($"Who will be the speaker at your conference {eventsNumber}: ");
+            string? eventSpeakerName = Console.ReadLine();
+
+            // asks user conference price
+            Console.Write($"How much should your conference cost {eventsNumber}: ");
+            int eventPrice = int.Parse(Console.ReadLine());
+
+            Console.WriteLine(); // empty line
+
+            // Create and store the events in the array
+            return new Conference(eventName, parsedDate, totalSeats, eventSpeakerName, eventPrice);
+        }
+
+        public static void AddSeatBooking(Event e)
         {
             //asks user if and how many seats should be booked until he is satisfied               
             Console.Write("Would you like to book some seats (yes / no): ");
-            string bookingAnswer = Console.ReadLine();
+            string? bookingAnswer = Console.ReadLine();
 
             if (bookingAnswer == "yes")
             {
                 Console.Write("How many seats should be booked: ");
                 int seatToBook = int.Parse(Console.ReadLine());
 
-                int seatsBooked = e.bookSeats(seatToBook);
+                int seatsBooked = e.BookSeats(seatToBook);
                 int seatsAvailable = e.GetEventMaxCapacity() - seatsBooked;
 
                 Console.WriteLine(); // empty line
 
-                Console.WriteLine($"This is the number of seats booked in event {e.eventTitle}: {seatsBooked}");
-                Console.WriteLine($"This is the number of seats available in event {e.eventTitle}: {seatsAvailable} \n");
+                Console.WriteLine($"This is the number of seats booked in event {e.EventTitle}: {seatsBooked}");
+                Console.WriteLine($"This is the number of seats available in event {e.EventTitle}: {seatsAvailable} \n");
             }
             else
             {
@@ -148,7 +196,7 @@ namespace csharp_gestore_eventi.Classes
             }
         }
 
-        public static void cancelSeatBooking(Event e)
+        public static void CancelSeatBooking(Event e)
         {
             // asks user if and how many seats booking he wants to cancel until he is satisfied
 
@@ -160,13 +208,13 @@ namespace csharp_gestore_eventi.Classes
                 Console.Write("How many seats booking should be cancelled: ");
                 int seatToCancel = int.Parse(Console.ReadLine());
 
-                int seatsBooked = e.cancelSeatBooking(seatToCancel);
+                int seatsBooked = e.CancelSeatBooking(seatToCancel);
                 int seatsAvailable = e.GetEventMaxCapacity() - seatsBooked;
 
                 Console.WriteLine(); // empty line
 
-                Console.WriteLine($"This is the number of seats booked (updated) in event {e.eventTitle}: {seatsBooked}");
-                Console.WriteLine($"This is the number of seats available in event (updated) {e.eventTitle}: {seatsAvailable} \n");
+                Console.WriteLine($"This is the number of seats booked (updated) in event {e.EventTitle}: {seatsBooked}");
+                Console.WriteLine($"This is the number of seats available in event (updated) {e.EventTitle}: {seatsAvailable} \n");
             }
             else
             {
@@ -201,9 +249,9 @@ namespace csharp_gestore_eventi.Classes
             }
             Console.WriteLine(); // empty line
 
-            Console.WriteLine("This is the program for this month: \n\t");
+            Console.WriteLine("This is the program for this month including events and conferences: \n\t");
             program.PrintEventDateTitle();
         }
-        
+
     }
 }

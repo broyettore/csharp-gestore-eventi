@@ -31,14 +31,14 @@ namespace csharp_gestore_eventi.Classes
         // formats date
         public string FormatDate()
         {
-            return this.eventDate.ToString("dd MMMM yyyy hh:mm");
+            return this.EventDate.ToString("dd MMMM yyyy hh:mm");
         }
 
         public override string ToString()
         {
             string formattedPrice = FormatPrice();
             string formattedDate = FormatDate();
-            return $"{formattedDate} - {this.eventTitle} - {this.Speaker} - {formattedPrice}";
+            return $"{formattedDate} - {this.EventTitle} - {this.Speaker} - {formattedPrice}";
         }
     }
 

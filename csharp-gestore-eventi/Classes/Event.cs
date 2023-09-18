@@ -11,7 +11,7 @@ namespace csharp_gestore_eventi.Classes
         // ATTRIBUTES
         private string title;
         private DateTime date;
-        private int maxCapacity;
+        private readonly int maxCapacity;
         private int bookedSeats;
 
         // CONSTRUCT
@@ -45,7 +45,7 @@ namespace csharp_gestore_eventi.Classes
         }
 
         //Getters and Setters
-        public string eventTitle
+        public string EventTitle
         {
             get
             {
@@ -62,7 +62,7 @@ namespace csharp_gestore_eventi.Classes
             }
         }
 
-        public DateTime eventDate
+        public DateTime EventDate
         {
             get
             {
@@ -82,7 +82,7 @@ namespace csharp_gestore_eventi.Classes
 
 
         // METHODS
-        public int bookSeats(int numberOfSeatsToBook)
+        public int BookSeats(int numberOfSeatsToBook)
         {
             if (this.date < DateTime.Now.AddMinutes(-1))
             {
@@ -102,7 +102,7 @@ namespace csharp_gestore_eventi.Classes
             return this.bookedSeats;
         }
 
-        public int cancelSeatBooking(int numberOfSeatsToCancel)
+        public int CancelSeatBooking(int numberOfSeatsToCancel)
         {
             if (this.date < DateTime.Now.AddMinutes(-1))
             {

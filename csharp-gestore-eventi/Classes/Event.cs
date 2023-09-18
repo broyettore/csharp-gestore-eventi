@@ -15,6 +15,10 @@ namespace csharp_gestore_eventi.Classes
 
         public Event(string title, DateTime date, int maxcapacity)
         {
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                throw new ArgumentException("title field can not be empty");
+            }
             this.title = title;
             this.date = date;
             if (maxcapacity <= 0)
@@ -25,12 +29,9 @@ namespace csharp_gestore_eventi.Classes
 
         // Getters only
 
-        public int GetEventMaxCapacity // only read
+        public int GetEventMaxCapacity() // only read
         {
-            get
-            {
-                return maxCapacity;
-            }
+            return maxCapacity;
         }
 
         public int GetTotalBookedSeats()
@@ -65,13 +66,15 @@ namespace csharp_gestore_eventi.Classes
 
             set
             {
-                if (value < DateTime.Now.AddMinutes(-1))
+                if (value < DateTime.Now)
                 {
                     throw new ArgumentException($"this date {value} is not correct");
                 }
                 this.date = value;
             }
         }
+
+ 
 
         // METHODS
         public void bookSeats(int numberOfSeatsToBook)

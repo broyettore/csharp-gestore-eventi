@@ -11,11 +11,9 @@ namespace csharp_gestore_eventi
             Console.WriteLine("Welcome to Event Handler 2.0 \n ");
 
             string programName = EventProgram.GetProgamName();
-
             Console.WriteLine(); // empty line
 
-            int eventsNumber = EventProgram.GetProgamNumOfEvents();
-             
+            int eventsNumber = EventProgram.GetProgamNumOfEvents();         
             Console.WriteLine(); // empty line         
 
             // Program instance created
@@ -47,7 +45,7 @@ namespace csharp_gestore_eventi
             }
 
             // Print all info related to the events in the program
-            EventProgram.PrintEventSummary(newProgram);
+            EventProgram.PrintEventSummary(newProgram);         
         }
     }
 }

@@ -71,7 +71,7 @@ namespace csharp_gestore_eventi.Classes
 
             set
             {
-                if (date < DateTime.Now.AddMinutes(-1))
+                if (this.date < DateTime.Now.AddMinutes(-1))
                 {
                     throw new ArgumentException($"this date {value} is not correct");
                 }
@@ -124,7 +124,7 @@ namespace csharp_gestore_eventi.Classes
 
         public override string ToString()
         {
-            string formatDate = this.date.ToString("dd/MM/yyyy HH:mm");
+            string formatDate = this.date.ToString("dd/MM/yyyy");
             return $"Event Date: {formatDate} - Event Title: {this.title}";
         }
 

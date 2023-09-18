@@ -8,18 +8,20 @@ namespace csharp_gestore_eventi.Classes
 {
     public class Event
     {
+        // ATTRIBUTES
         private string title;
         private DateTime date;
         private int maxCapacity;
         private int bookedSeats;
 
+        // CONSTRUCT
         public Event(string title, DateTime date, int maxcapacity)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("title field can not be empty");
             this.title = title;
 
-            if (date < DateTime.Now)
+            if (date < DateTime.Now.AddMinutes(-1))
                 throw new ArgumentException($"this date {date} is not correct");
             this.date = date;
 
@@ -32,7 +34,7 @@ namespace csharp_gestore_eventi.Classes
 
         // Getters only
 
-        public int GetEventMaxCapacity() // only read
+        public int GetEventMaxCapacity()
         {
             return maxCapacity;
         }
@@ -69,11 +71,11 @@ namespace csharp_gestore_eventi.Classes
 
             set
             {
-                if (value < DateTime.Now)
+                if (date < DateTime.Now.AddMinutes(-1))
                 {
                     throw new ArgumentException($"this date {value} is not correct");
-                    this.date = value;
                 }
+                this.date = value;
             }
         }
 
@@ -82,7 +84,7 @@ namespace csharp_gestore_eventi.Classes
         // METHODS
         public int bookSeats(int numberOfSeatsToBook)
         {
-            if (this.date < DateTime.Now)
+            if (this.date < DateTime.Now.AddMinutes(-1))
             {
                 throw new ArgumentException("the event has already passed");
             }
@@ -102,7 +104,7 @@ namespace csharp_gestore_eventi.Classes
 
         public int cancelSeatBooking(int numberOfSeatsToCancel)
         {
-            if (this.date < DateTime.Now)
+            if (this.date < DateTime.Now.AddMinutes(-1))
             {
                 throw new ArgumentException("the event has already ended");
             }
@@ -123,7 +125,7 @@ namespace csharp_gestore_eventi.Classes
         public override string ToString()
         {
             string formatDate = this.date.ToString("dd/MM/yyyy HH:mm");
-            return $"\n Event Date: {formatDate} \n Event Title: {this.title}";
+            return $"Event Date: {formatDate} - Event Title: {this.title}";
         }
 
     }
